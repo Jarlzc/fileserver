@@ -1,0 +1,98 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+
+    <title>Signin Template for Bootstrap</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/sign-in/">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="./style/style.css" rel="stylesheet">
+  </head>
+
+  <body class="text-center">
+    <form class="form-signin" action='/files' method='post' enctype="multipart/form-data">
+      <img class="mb-4" src="./img/file-svgrepo-com.svg" alt="" width="72" height="72">
+      <h1 class="h3 mb-3 font-weight-normal">Please upload</h1>
+      <label for="inputEmail" class="sr-only">Email address</label>
+      <input type="file" name='upload' id="myFile" multiple size='50' onchange="myFunction()" class="form-control">
+
+      <input class="btn btn-lg btn-primary btn-block" type="submit" value="submit">
+      <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
+    </form>
+    <div class="container">
+        <div class="order-md-2 mb-4">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Your file</span>
+            <span class="badge badge-secondary badge-pill" id="totalFile">0</span>
+          </h4>
+          <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+                <h6 class="my-0" id=fileInformation>waiting for uploads</h6>
+                <small class="text-muted" id="fileSize"> </small>
+              </div>
+              <span class="text-muted"></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+                <h6 class="my-0">More Features</h6>
+                <small class="text-muted">Comming Soon!</small>
+              </div>
+              <span class="text-muted"></span>
+            </li>
+
+          </ul>
+        </div>
+
+        <script>
+            function myFunction() {
+                let x = document.getElementById('myFile');
+                let txt = '';
+                let txtsize = '';
+    
+                if ('files' in x) {
+                    if (x.files.length == 0) {
+                        txt = 'Select one or more files.';
+                    } else {
+                        for (var i = 0; i < x.files.length; i++) {  
+                            txtnumber = i+1;
+                            txt += "File ";
+                            var file = x.files[i];
+                            if ('name' in file) {
+                                txt += 'name: ' + file.name + '<br>';
+                            }
+                            if ('size' in file) {
+                                txtsize += 'size: ' + file.size + ' bytes <br>';
+                            }
+                        }
+                    }
+                } else {
+                    if (x.value == '') {
+                        txt += 'Select one or more files.';
+                    } else {
+                        txt += "The files property is not supported by your browser!";
+                        txt += "<br>The path of the selected file: " + x.value;
+                    }
+                }
+                document.getElementById('fileInformation').innerHTML = txt;
+                document.getElementById('fileSize').innerHTML = txtsize;
+                document.getElementById('totalFile').innerHTML = txtnumber;
+                
+            }
+    
+        </script>
+        <script type='text/javascript'>
+    
+        </script>
+  </body>
+</html>
