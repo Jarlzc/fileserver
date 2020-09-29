@@ -69,36 +69,27 @@ app.post("/files", (req, res) => {
   // after the request path upload.single('upload'),
   console.log(req.files);
 
-  // if (req.files.upload instanceof Array) {
-  //   for (var i = 0; i < req.files.upload.length; i++) {
-  //     let file = req.files.upload[i].name;
-  //     let data = req.files.upload[i].data;
-  //     caches[file] = writeFile(file, data);
-  //     console.log(caches);
-  //     caches[file]
-  //       .then(() =>
-  //         res.end(
-  //           "Wow you sent a file, can you remember how to download it? Goto your browser, url: localhost:3000/uploaded/:file-name"
-  //         )
-  //       )
-  //       .catch((error) => {
-  //         console.log(error);
-  //         res.end(error);
-  //       });
-  //   }
-  // } else {
-    console.log(req.files);
-
     let file = req.files.upload.name;
     let data = req.files.upload.data;
-
+    
     caches[file] = writeFile(file, data);
 
-    caches[file]
-      .then(() =>
-        res.sendFile(__dirname + '/success.html')
-      )
-      .catch((e) => res.status(500).send(e.message));
+    // caches[file]
+    //   .then(() =>
+    //     res.sendFile(__dirname + '/success.html')
+    //   )
+    //   .catch((e) => res.status(500).send(e.message));
+
+    let Namearr = fs.readFileSync("storage.json", {encoding: "utf-8"});
+
+    let jsonFiledata = JSON.parse(Namearr);
+
+    jsonFiledata.push({name: file});
+
+    fs.writeFile("storage.json", JSON.stringify(jsonFiledata), "utf-8", function (err) {
+      if (err) throw err;
+    });
+    res.sendFile(__dirname + '/success.html')
   
 });
 
@@ -124,6 +115,17 @@ app.get("/uploaded/:name", (req, res) => {
     .catch((e) => res.status(500).send(e.message));
 });
 
+app.get('/uploaded', (req, res)=> {                             //endpoint api 
+    let fileName 
+    fs.readFile("storage.json", "utf8", function(err, data) {
+      if (err) {
+        console.log(err);
+      } else {
+        fileName=JSON.parse(data);
+        res.send(fileName)
+      }
+    })
+})
 app.listen(port, () => {
   console.log(`Application Listening to port: ${port}`);
 });
